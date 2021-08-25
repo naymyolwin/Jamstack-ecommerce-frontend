@@ -10,7 +10,7 @@ import { graphql } from 'gatsby';
 
 exports.createPages = async ({ graphql, actions }) => {
   const { createPage } = actions
-  const results = await graphql(
+  const result = await graphql(
     `
       {
         products: allStrapiProduct {
@@ -30,23 +30,37 @@ exports.createPages = async ({ graphql, actions }) => {
               strapiId
               name
               description
+              filterOptions {
+                Size {
+                  checked
+                  label
+                }
+                Style {
+                  checked
+                  label
+                }
+                Color {
+                  checked
+                  label
+                }
+              }
             }
           }
         }
       }
     `
   )
-  if (results.errors) {
-    throw results.errors
+  if (result.errors) {
+    throw result.errors
   }
-  const products = resutls.data.products.edges
-  const categories = resutls.data.categories.edges
+  const products = result.data.products.edges
+  const categories = result.data.categories.edges
 
   products.forEach(product => {
     createPage({
-      path: `/${product.node.category.name.tolowerCase()}/${encodeURIComponent(
+      path: `/${product.node.category.name.toLowerCase()}/${
         product.node.name.split(" ")[0]
-      )}`,
+      }`,
       component: require.resolve("./src/template/ProductDetail.js"),
       context: {
         name: product.node.name,
@@ -58,12 +72,13 @@ exports.createPages = async ({ graphql, actions }) => {
 
   categories.forEach(category => {
     createPage({
-      path: `/${category.node.name.tolowerCase()}`,
+      path: `/${category.node.name.toLowerCase()}`,
       component: require.resolve("./src/template/ProductList.js"),
       context: {
         name: category.node.name,
         description: category.node.description,
         id: category.node.strapiId,
+        filterOptions: category.node.filterOptions,
       },
     })
   })
