@@ -33,7 +33,16 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const ProductFrameGrid = ({ product, variant }) => {
+const ProductFrameGrid = ({
+  product,
+  variant,
+  sizes,
+  colors,
+  selectedSize,
+  setSelectedSize,
+  selectedColor,
+  setSelectedColor,
+}) => {
   const classes = useStyles()
 
   const [open, setOpen] = useState(false)
@@ -61,6 +70,12 @@ const ProductFrameGrid = ({ product, variant }) => {
         name={name}
         price={variant.price}
         product={product}
+        sizes={sizes}
+        colors={colors}
+        selectedSize={selectedSize}
+        setSelectedSize={setSelectedSize}
+        selectedColor={selectedColor}
+        setSelectedColor={setSelectedColor}
       />
     </Grid>
   )

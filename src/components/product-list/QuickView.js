@@ -64,20 +64,27 @@ const useStyles = makeStyles(theme => ({
     display: "flex",
     alignItems: "center",
   },
+  qtyContainer: {
+    marginTop: "2.25rem",
+  },
 }))
 
 const QuickView = props => {
-  const { open, setOpen, url, name, price, product } = props
+  const {
+    open,
+    setOpen,
+    url,
+    name,
+    price,
+    product,
+    sizes,
+    colors,
+    selectedSize,
+    setSelectedSize,
+    selectedColor,
+    setSelectedColor,
+  } = props
   const classes = useStyles()
-  const [selectedSize, setSelectedSize] = useState(null)
-  const [selectedColor, setSelectedColor] = useState(null)
-
-  const sizes = []
-  const colors = []
-  product.node.variants.map(variant => {
-    sizes.push(variant.size)
-    colors.push(variant.color)
-  })
 
   return (
     <Dialog
@@ -147,7 +154,9 @@ const QuickView = props => {
                   selectedColor={selectedColor}
                   setSelectedColor={setSelectedColor}
                 />
-                <QtyButton />
+                <span className={classes.qtyContainer}>
+                  <QtyButton />
+                </span>
               </Grid>
             </Grid>
           </Grid>

@@ -15,7 +15,6 @@ const useStyles = makeStyles(theme => ({
   },
   mainGroup: {
     height: "3rem",
-    marginTop: "2.25rem",
   },
   editButtons: {
     height: "1.525rem",
@@ -92,7 +91,7 @@ const QtyButton = () => {
           classes={{ root: clsx(classes.endButtons, classes.cartButton) }}
         >
           <Badge
-            overlap="circle"
+            overlap="circular"
             badgeContent="+"
             classes={{ badge: classes.badge }}
           >

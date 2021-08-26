@@ -16,7 +16,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const DynamicToolbar = props => {
-  const { filterOptions, name, description } = props
+  const { filterOptions, name, description, layout, setLayout } = props
   const classes = useStyles()
   const [option, setOption] = useState(null)
   return (
@@ -27,7 +27,12 @@ const DynamicToolbar = props => {
         setOption={setOption}
       />
       {option === null && (
-        <DescriptionContainer name={name} description={description} />
+        <DescriptionContainer
+          name={name}
+          description={description}
+          layout={layout}
+          setLayout={setLayout}
+        />
       )}
     </Grid>
   )

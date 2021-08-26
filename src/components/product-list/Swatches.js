@@ -29,7 +29,7 @@ const Swatches = ({ colors, selectedColor, setSelectedColor }) => {
   return (
     <Grid item container>
       {colors.sort().map(color => (
-        <Grid item classes={{ root: classes.swatchesContainer }}>
+        <Grid item key={color} classes={{ root: classes.swatchesContainer }}>
           <Button
             onClick={() => setSelectedColor(color)}
             style={{ backgroundColor: color }}

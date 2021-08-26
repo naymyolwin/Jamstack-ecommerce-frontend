@@ -62,10 +62,9 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const DescriptionContainer = props => {
-  const { name, description } = props
+  const { name, description, layout, setLayout } = props
   const classes = useStyles()
 
-  const [layout, setLayout] = useState("grid")
   return (
     <Grid
       item
