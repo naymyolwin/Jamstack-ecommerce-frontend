@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import Grid from "@material-ui/core/Grid"
 import Typography from "@material-ui/core/Typography"
 import Dialog from "@material-ui/core/Dialog"
@@ -10,6 +10,9 @@ import { makeStyles } from "@material-ui/core/styles"
 import frame from "../../images/selected-frame.svg"
 import explore from "../../images/explore.svg"
 import Rating from "../home/Rating"
+import Sizes from "./Sizes"
+import Swatches from "./Swatches"
+import QtyButton from "./QtyButton"
 
 const useStyles = makeStyles(theme => ({
   selectedFrame: {
@@ -33,6 +36,7 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.primary.main,
     height: "13rem",
     marginTop: "2rem",
+    padding: "0.5rem 1rem",
   },
   stock: {
     color: "#fff",
@@ -52,7 +56,6 @@ const useStyles = makeStyles(theme => ({
   },
   infoContainer: {
     height: "100%",
-    padding: "0.5rem 1rem",
   },
   chipRoot: {
     transform: "scale(1.5)",
@@ -64,8 +67,18 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const QuickView = props => {
-  const { open, setOpen, url, name, price } = props
+  const { open, setOpen, url, name, price, product } = props
   const classes = useStyles()
+  const [selectedSize, setSelectedSize] = useState(null)
+  const [selectedColor, setSelectedColor] = useState(null)
+
+  const sizes = []
+  const colors = []
+  product.node.variants.map(variant => {
+    sizes.push(variant.size)
+    colors.push(variant.color)
+  })
+
   return (
     <Dialog
       classes={{ paper: classes.dialog }}
@@ -81,7 +94,12 @@ const QuickView = props => {
               className={classes.productImage}
             />
           </Grid>
-          <Grid item container classes={{ root: classes.toolbar }}>
+          <Grid
+            item
+            container
+            justifyContent="space-between"
+            classes={{ root: classes.toolbar }}
+          >
             <Grid item>
               <Grid
                 container
@@ -115,6 +133,22 @@ const QuickView = props => {
             </Grid>
             <Grid item classes={{ root: classes.chipContainer }}>
               <Chip label={`$${price}`} classes={{ root: classes.chipRoot }} />
+            </Grid>
+            <Grid item>
+              <Grid container direction="column">
+                <Sizes
+                  sizes={sizes}
+                  selectedSize={selectedSize}
+                  setSelectedSize={setSelectedSize}
+                />
+
+                <Swatches
+                  colors={colors}
+                  selectedColor={selectedColor}
+                  setSelectedColor={setSelectedColor}
+                />
+                <QtyButton />
+              </Grid>
             </Grid>
           </Grid>
         </Grid>
