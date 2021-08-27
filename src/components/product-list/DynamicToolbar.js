@@ -16,7 +16,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const DynamicToolbar = props => {
-  const { filterOptions, name, description, layout, setLayout } = props
+  const { filterOptions, name, description, layout, setLayout, setPage } = props
   const classes = useStyles()
   const [option, setOption] = useState(null)
   return (
@@ -32,6 +32,7 @@ const DynamicToolbar = props => {
           description={description}
           layout={layout}
           setLayout={setLayout}
+          setPage={setPage}
         />
       )}
     </Grid>

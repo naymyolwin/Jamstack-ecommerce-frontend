@@ -62,8 +62,13 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const DescriptionContainer = props => {
-  const { name, description, layout, setLayout } = props
+  const { name, description, layout, setLayout, setPage } = props
   const classes = useStyles()
+
+  const changeLayout = option => {
+    setPage(1)
+    setLayout(option)
+  }
 
   return (
     <Grid
@@ -87,7 +92,7 @@ const DescriptionContainer = props => {
       <Grid item classes={{ root: classes.buttonGroup }}>
         <ButtonGroup>
           <Button
-            onClick={() => setLayout("list")}
+            onClick={() => changeLayout("list")}
             classes={{
               outlined: clsx(classes.button, {
                 [classes.selected]: layout === "list",
@@ -97,7 +102,7 @@ const DescriptionContainer = props => {
             <ListIcon color={layout === "list" ? "#fff" : undefined} />
           </Button>
           <Button
-            onClick={() => setLayout("grid")}
+            onClick={() => changeLayout("grid")}
             classes={{
               outlined: clsx(classes.button, {
                 [classes.selected]: layout === "grid",
