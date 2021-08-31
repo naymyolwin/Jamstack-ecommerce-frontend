@@ -4,23 +4,53 @@ import Typography from "@material-ui/core/Typography"
 import { makeStyles } from "@material-ui/core/styles"
 import ProductFrameGrid from "./ProductFrameGrid"
 import ProductFrameList from "./ProductFrameList"
+import useMediaQuery from "@material-ui/core/useMediaQuery"
 
 const useStyles = makeStyles(theme => ({
   productContainer: {
     width: "95%",
-    "& > *": {
-      marginRight: ({ layout }) =>
-        layout === "grid" ? "calc((100% - (25rem * 4)) / 3)" : 0,
-      marginBottom: "5rem",
+
+    [theme.breakpoints.only("xl")]: {
+      "& > *": {
+        marginRight: ({ layout }) =>
+          layout === "grid" ? "calc((100% - (25rem * 4)) / 3)" : 0,
+        marginBottom: "5rem",
+      },
+      "& > :nth-child(4n)": {
+        marginRight: 0,
+      },
     },
-    "& > :nth-child(4n)": {
-      marginRight: 0,
+    [theme.breakpoints.only("lg")]: {
+      "& > *": {
+        marginRight: ({ layout }) =>
+          layout === "grid" ? "calc((100% - (25rem * 3)) / 2)" : 0,
+        marginBottom: "5rem",
+      },
+      "& > :nth-child(3n)": {
+        marginRight: 0,
+      },
+    },
+    [theme.breakpoints.only("md")]: {
+      "& > *": {
+        marginRight: ({ layout }) =>
+          layout === "grid" ? "calc(100% - (25rem * 2))" : 0,
+        marginBottom: "5rem",
+      },
+      "& > :nth-child(2n)": {
+        marginRight: 0,
+      },
+    },
+    [theme.breakpoints.down("sm")]: {
+      "& > *": {
+        marginBottom: "5rem",
+      },
     },
   },
 }))
 
 const ListOfProducts = ({ products, layout, page, productPerPage }) => {
   const classes = useStyles({ layout })
+  const matchesSM = useMediaQuery(theme => theme.breakpoints.down("sm"))
 
   const FrameHelper = ({ Frame, product, variant }) => {
     const [selectedSize, setSelectedSize] = useState(null)
@@ -30,7 +60,9 @@ const ListOfProducts = ({ products, layout, page, productPerPage }) => {
     const colors = []
     product.node.variants.map(variant => {
       sizes.push(variant.size)
-      colors.push(variant.color)
+      if (!colors.includes(variant.color)) {
+        colors.push(variant.color)
+      }
     })
     return (
       <Frame
@@ -52,7 +84,13 @@ const ListOfProducts = ({ products, layout, page, productPerPage }) => {
   )
 
   return (
-    <Grid item container classes={{ root: classes.productContainer }}>
+    <Grid
+      item
+      container
+      direction={matchesSM ? "column" : "row"}
+      alignItems={matchesSM ? "center" : undefined}
+      classes={{ root: classes.productContainer }}
+    >
       {content
         .slice((page - 1) * productPerPage, page * productPerPage)
         .map(item => (

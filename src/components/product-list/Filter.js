@@ -1,6 +1,5 @@
 import React from "react"
 import Grid from "@material-ui/core/Grid"
-import Typography from "@material-ui/core/Typography"
 import IconButton from "@material-ui/core/IconButton"
 import FormControl from "@material-ui/core/FormControl"
 import FormControlLabel from "@material-ui/core/FormControlLabel"
@@ -18,6 +17,13 @@ const useStyles = makeStyles(theme => ({
   },
   checkbox: {
     color: "#fff",
+  },
+  optionContainer: {
+    [theme.breakpoints.down("xs")]: {
+      "& > :not(:last-child)": {
+        marginBottom: "2rem",
+      },
+    },
   },
 }))
 
@@ -39,7 +45,11 @@ const Filter = props => {
         </IconButton>
       </Grid>
       <Grid item xs>
-        <Grid container justifyContent="space-around">
+        <Grid
+          container
+          justifyContent="space-around"
+          classes={{ root: classes.optionContainer }}
+        >
           {Object.keys(filterOptions)
             .filter(option => filterOptions[option] !== null)
             .map(option => (

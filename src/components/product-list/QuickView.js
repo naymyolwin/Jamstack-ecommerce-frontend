@@ -6,6 +6,7 @@ import DialogContent from "@material-ui/core/DialogContent"
 import Button from "@material-ui/core/Button"
 import Chip from "@material-ui/core/Chip"
 import { makeStyles } from "@material-ui/core/styles"
+import { Link } from "gatsby"
 
 import frame from "../../images/selected-frame.svg"
 import explore from "../../images/explore.svg"
@@ -37,6 +38,7 @@ const useStyles = makeStyles(theme => ({
     height: "13rem",
     marginTop: "2rem",
     padding: "0.5rem 1rem",
+    position: "relative",
   },
   stock: {
     color: "#fff",
@@ -67,6 +69,15 @@ const useStyles = makeStyles(theme => ({
   qtyContainer: {
     marginTop: "2.25rem",
   },
+  infoItem: {
+    position: "absolute",
+    left: "1rem",
+    height: " calc(100% - 1rem)",
+  },
+  actionItem: {
+    position: "absolute",
+    right: "1rem",
+  },
 }))
 
 const QuickView = props => {
@@ -94,7 +105,13 @@ const QuickView = props => {
     >
       <DialogContent classes={{ root: classes.selectedFrame }}>
         <Grid container direction="column" alignItems="center">
-          <Grid item>
+          <Grid
+            item
+            component={Link}
+            to={`/${product.node.category.name.toLowerCase()}/${product.node.name
+              .split(" ")[0]
+              .toLowerCase()}`}
+          >
             <img
               src={url}
               alt="product image"
@@ -104,15 +121,19 @@ const QuickView = props => {
           <Grid
             item
             container
-            justifyContent="space-between"
+            justifyContent="center"
             classes={{ root: classes.toolbar }}
           >
-            <Grid item>
+            <Grid item classes={{ root: classes.infoItem }}>
               <Grid
                 container
                 direction="column"
                 justifyContent="space-between"
                 classes={{ root: classes.infoContainer }}
+                component={Link}
+                to={`/${product.node.category.name.toLowerCase()}/${product.node.name
+                  .split(" ")[0]
+                  .toLowerCase()}`}
               >
                 <Grid item>
                   <Typography variant="h4">{name}</Typography>
@@ -141,7 +162,7 @@ const QuickView = props => {
             <Grid item classes={{ root: classes.chipContainer }}>
               <Chip label={`$${price}`} classes={{ root: classes.chipRoot }} />
             </Grid>
-            <Grid item>
+            <Grid item classes={{ root: classes.actionItem }}>
               <Grid container direction="column">
                 <Sizes
                   sizes={sizes}

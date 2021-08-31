@@ -10,6 +10,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel"
 import FormGroup from "@material-ui/core/FormGroup"
 import Checkbox from "@material-ui/core/Checkbox"
 import Chip from "@material-ui/core/Chip"
+import useMediaQuery from "@material-ui/core/useMediaQuery"
 
 import background from "../../images/toolbar-background.svg"
 import ListIcon from "../../images/List"
@@ -24,9 +25,15 @@ const useStyles = makeStyles(theme => ({
   descriptionContainer: {
     backgroundColor: theme.palette.primary.main,
     height: "15rem",
-    width: "60rem",
+    width: "60%",
     borderRadius: 25,
     padding: "1rem",
+    [theme.breakpoints.down("md")]: {
+      width: "100%",
+    },
+    [theme.breakpoints.down("sm")]: {
+      borderRadius: 0,
+    },
   },
   mainContainer: {
     padding: "3rem",
@@ -35,6 +42,9 @@ const useStyles = makeStyles(theme => ({
     backgroundRepeat: "no-repeat",
     backgroundPosition: "center",
     position: "relative",
+    [theme.breakpoints.down("sm")]: {
+      padding: "3rem 0",
+    },
   },
   button: {
     border: `2px solid ${theme.palette.primary.main}`,
@@ -58,12 +68,25 @@ const useStyles = makeStyles(theme => ({
     bottom: 0,
     marginRight: "3rem",
     marginBottom: "3rem",
+    [theme.breakpoints.down("md")]: {
+      position: "relative",
+      display: "flex",
+      alignSelf: "flex-end",
+      marginRight: 0,
+      marginBottom: 0,
+      marginTop: "3rem",
+    },
+    [theme.breakpoints.down("sm")]: {
+      marginRight: "1.5rem",
+    },
   },
 }))
 
 const DescriptionContainer = props => {
   const { name, description, layout, setLayout, setPage } = props
   const classes = useStyles()
+
+  const matchesMD = useMediaQuery(theme => theme.breakpoints.down("md"))
 
   const changeLayout = option => {
     setPage(1)
@@ -76,9 +99,11 @@ const DescriptionContainer = props => {
       container
       classes={{ root: classes.mainContainer }}
       justifyContent="center"
+      direction={matchesMD ? "column" : "row"}
+      alignItems={matchesMD ? "center" : undefined}
     >
       <Grid item classes={{ root: classes.descriptionContainer }}>
-        <Typography variant="h4" paragraph gutterBottom align="center">
+        <Typography variant="h4" align="center">
           {name}
         </Typography>
         <Typography
