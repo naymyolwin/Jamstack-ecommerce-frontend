@@ -28,8 +28,14 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const Filter = props => {
-  const { setOption, filterOptions } = props
+  const { setOption, filterOptions, setFilterOptions } = props
   const classes = useStyles()
+
+  const handleFilter = (option, i) => {
+    const newFilter = { ...filterOptions }
+    newFilter[option][i].checked = !newFilter[option][i].checked
+    setFilterOptions(newFilter)
+  }
 
   return (
     <Grid
@@ -61,13 +67,14 @@ const Filter = props => {
                   <Grid item>
                     <FormControl>
                       <FormGroup>
-                        {filterOptions[option].map(({ label, checked }) => (
+                        {filterOptions[option].map(({ label, checked }, i) => (
                           <FormControlLabel
                             key={label}
                             label={label}
                             classes={{ label: classes.checkbox }}
                             control={
                               <Checkbox
+                                onChange={() => handleFilter(option, i)}
                                 checked={checked}
                                 name={label}
                                 classes={{ root: classes.checkbox }}

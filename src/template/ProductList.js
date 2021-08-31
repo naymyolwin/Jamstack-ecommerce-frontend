@@ -42,7 +42,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const ProductList = ({
-  pageContext: { filterOptions, name, description },
+  pageContext: { filterOptions: options, name, description },
   data: {
     allStrapiProduct: { edges: products },
   },
@@ -50,6 +50,7 @@ const ProductList = ({
   const classes = useStyles()
   const [layout, setLayout] = useState("grid")
   const [page, setPage] = useState(1)
+  const [filterOptions, setFilterOptions] = useState(options)
   const scrollRef = useRef(null)
 
   const scroll = () => {
@@ -69,6 +70,7 @@ const ProductList = ({
         <div ref={scrollRef} />
         <DynamicToolbar
           filterOptions={filterOptions}
+          setFilterOptions={setFilterOptions}
           name={name}
           description={description}
           layout={layout}
@@ -80,6 +82,7 @@ const ProductList = ({
           productPerPage={productPerPage}
           products={products}
           layout={layout}
+          filterOptions={filterOptions}
         />
         <Pagination
           count={numPages}
@@ -114,6 +117,7 @@ export const query = graphql`
             price
             size
             style
+            colorLabel
             images {
               url
             }

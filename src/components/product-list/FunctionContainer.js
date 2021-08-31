@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const FunctionContainer = props => {
-  const { filterOptions, option, setOption } = props
+  const { filterOptions, setFilterOptions, option, setOption } = props
   const classes = useStyles({ option })
 
   const content = () => {
@@ -29,7 +29,13 @@ const FunctionContainer = props => {
         return <Sort setOption={setOption} />
 
       case "filter":
-        return <Filter setOption={setOption} filterOptions={filterOptions} />
+        return (
+          <Filter
+            setOption={setOption}
+            filterOptions={filterOptions}
+            setFilterOptions={setFilterOptions}
+          />
+        )
 
       default:
         const items = [

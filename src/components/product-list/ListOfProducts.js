@@ -48,7 +48,13 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const ListOfProducts = ({ products, layout, page, productPerPage }) => {
+const ListOfProducts = ({
+  products,
+  layout,
+  page,
+  productPerPage,
+  filterOptions,
+}) => {
   const classes = useStyles({ layout })
   const matchesSM = useMediaQuery(theme => theme.breakpoints.down("sm"))
 
@@ -82,6 +88,65 @@ const ListOfProducts = ({ products, layout, page, productPerPage }) => {
   products.map((product, i) =>
     product.node.variants.map(variant => content.push({ product: i, variant }))
   )
+
+  var isFiltered = false
+  var filters = {}
+  var filteredProducts = []
+
+  Object.keys(filterOptions)
+    .filter(option => filterOptions[option] !== null)
+    .map(option => {
+      filterOptions[option].forEach(value => {
+        if (value.checked) {
+          isFiltered = true
+          if (filters[option] === undefined) {
+            filters[option] = []
+          }
+
+          if (!filters[option].includes(value)) {
+            filters[option].push(value)
+          }
+
+          content.forEach(item => {
+            if (option === "Color") {
+              if (
+                item.variant.colorLabel === value.label &&
+                !filteredProducts.includes(item)
+              ) {
+                filteredProducts.push(item)
+              }
+            } else if (
+              item.variant[option.toLowerCase()] === value.label &&
+              !filteredProducts.includes(item)
+            ) {
+              filteredProducts.push(item)
+            }
+          })
+        }
+      })
+    })
+
+  Object.keys(filters).forEach(filter => {
+    filteredProducts = filteredProducts.filter(item => {
+      let valid
+
+      filters[filter].some(value => {
+        if (filter === "Color") {
+          if (item.variant.colorLabel === value.label) {
+            valid = item
+          }
+        } else if (item.variant[filter.toLowerCase()] === value.label) {
+          valid = item
+        }
+      })
+
+      return valid
+    })
+  })
+
+  if (isFiltered) {
+    content = filteredProducts
+  }
 
   return (
     <Grid
