@@ -23,7 +23,6 @@ const DynamicToolbar = props => {
     description,
     layout,
     setLayout,
-    setPage,
   } = props
   const classes = useStyles()
   const [option, setOption] = useState(null)
@@ -41,7 +40,6 @@ const DynamicToolbar = props => {
           description={description}
           layout={layout}
           setLayout={setLayout}
-          setPage={setPage}
         />
       )}
     </Grid>

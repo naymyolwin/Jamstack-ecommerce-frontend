@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react"
+import React, { useState, useRef, useEffect } from "react"
 import Layout from "../components/ui/layout"
 import Grid from "@material-ui/core/Grid"
 import Fab from "@material-ui/core/Fab"
@@ -57,12 +57,77 @@ const ProductList = ({
     scrollRef.current.scrollIntoView({ behavior: "smooth" })
   }
 
+  useEffect(() => {
+    setPage(1)
+  }, [filterOptions, layout])
+
   const productPerPage = layout === "grid" ? 16 : 6
 
-  var numVariant = 0
-  products.map(product => (numVariant += product.node.variants.length))
+  var content = []
+  products.map((product, i) =>
+    product.node.variants.map(variant => content.push({ product: i, variant }))
+  )
 
-  const numPages = Math.ceil(numVariant / productPerPage)
+  var isFiltered = false
+  var filters = {}
+  var filteredProducts = []
+
+  Object.keys(filterOptions)
+    .filter(option => filterOptions[option] !== null)
+    .map(option => {
+      filterOptions[option].forEach(value => {
+        if (value.checked) {
+          isFiltered = true
+          if (filters[option] === undefined) {
+            filters[option] = []
+          }
+
+          if (!filters[option].includes(value)) {
+            filters[option].push(value)
+          }
+
+          content.forEach(item => {
+            if (option === "Color") {
+              if (
+                item.variant.colorLabel === value.label &&
+                !filteredProducts.includes(item)
+              ) {
+                filteredProducts.push(item)
+              }
+            } else if (
+              item.variant[option.toLowerCase()] === value.label &&
+              !filteredProducts.includes(item)
+            ) {
+              filteredProducts.push(item)
+            }
+          })
+        }
+      })
+    })
+
+  Object.keys(filters).forEach(filter => {
+    filteredProducts = filteredProducts.filter(item => {
+      let valid
+
+      filters[filter].some(value => {
+        if (filter === "Color") {
+          if (item.variant.colorLabel === value.label) {
+            valid = item
+          }
+        } else if (item.variant[filter.toLowerCase()] === value.label) {
+          valid = item
+        }
+      })
+
+      return valid
+    })
+  })
+
+  if (isFiltered) {
+    content = filteredProducts
+  }
+
+  const numPages = Math.ceil(content.length / productPerPage)
 
   return (
     <Layout>
@@ -75,12 +140,12 @@ const ProductList = ({
           description={description}
           layout={layout}
           setLayout={setLayout}
-          setPage={setPage}
         />
         <ListOfProducts
           page={page}
           productPerPage={productPerPage}
           products={products}
+          content={content}
           layout={layout}
           filterOptions={filterOptions}
         />

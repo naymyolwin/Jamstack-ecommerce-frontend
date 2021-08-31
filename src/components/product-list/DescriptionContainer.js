@@ -83,13 +83,12 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const DescriptionContainer = props => {
-  const { name, description, layout, setLayout, setPage } = props
+  const { name, description, layout, setLayout } = props
   const classes = useStyles()
 
   const matchesMD = useMediaQuery(theme => theme.breakpoints.down("md"))
 
   const changeLayout = option => {
-    setPage(1)
     setLayout(option)
   }
 
