@@ -20,13 +20,26 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const FunctionContainer = props => {
-  const { filterOptions, setFilterOptions, option, setOption } = props
+  const {
+    filterOptions,
+    setFilterOptions,
+    option,
+    setOption,
+    sortOptions,
+    setSortOptions,
+  } = props
   const classes = useStyles({ option })
 
   const content = () => {
     switch (option) {
       case "sort":
-        return <Sort setOption={setOption} />
+        return (
+          <Sort
+            setOption={setOption}
+            sortOptions={sortOptions}
+            setSortOptions={setSortOptions}
+          />
+        )
 
       case "filter":
         return (
