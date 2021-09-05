@@ -71,6 +71,11 @@ const ListOfProducts = ({
         colors.push(variant.color)
       }
     })
+
+    const hasStyle = product.node.variants.some(
+      variant => variant.style !== null
+    )
+
     return (
       <Frame
         sizes={sizes}
@@ -81,6 +86,7 @@ const ListOfProducts = ({
         setSelectedColor={setSelectedColor}
         variant={variant}
         product={product}
+        hasStyle={hasStyle}
       />
     )
   }

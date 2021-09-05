@@ -86,6 +86,7 @@ const QuickView = props => {
     setOpen,
     url,
     name,
+    variant,
     price,
     product,
     sizes,
@@ -94,6 +95,7 @@ const QuickView = props => {
     setSelectedSize,
     selectedColor,
     setSelectedColor,
+    hasStyle,
   } = props
   const classes = useStyles()
 
@@ -110,7 +112,7 @@ const QuickView = props => {
             component={Link}
             to={`/${product.node.category.name.toLowerCase()}/${product.node.name
               .split(" ")[0]
-              .toLowerCase()}`}
+              .toLowerCase()}${hasStyle ? `?style=${variant.style}` : ""}`}
           >
             <img
               src={url}
@@ -133,7 +135,7 @@ const QuickView = props => {
                 component={Link}
                 to={`/${product.node.category.name.toLowerCase()}/${product.node.name
                   .split(" ")[0]
-                  .toLowerCase()}`}
+                  .toLowerCase()}${hasStyle ? `?style=${variant.style}` : ""}`}
               >
                 <Grid item>
                   <Typography variant="h4">{name}</Typography>

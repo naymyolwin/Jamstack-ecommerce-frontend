@@ -34,6 +34,7 @@ const useStyles = makeStyles(theme => ({
     ...theme.typography.body1,
     fontWeight: 600,
   },
+
   icon: {
     height: "3rem",
     width: "3rem",

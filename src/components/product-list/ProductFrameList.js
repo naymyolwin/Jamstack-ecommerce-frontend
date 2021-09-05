@@ -60,6 +60,7 @@ const ProductFrameList = ({
   setSelectedSize,
   selectedColor,
   setSelectedColor,
+  hasStyle,
 }) => {
   const classes = useStyles()
   const imageIndex = colorIndex(product, variant, selectedColor)
@@ -85,7 +86,7 @@ const ProductFrameList = ({
             component={Link}
             to={`/${product.node.category.name.toLowerCase()}/${product.node.name
               .split(" ")[0]
-              .toLowerCase()}`}
+              .toLowerCase()}${hasStyle ? `?style=${variant.style}` : ""}`}
           >
             <img
               src={process.env.GATSBY_STRAPI_URL + image.url}
@@ -110,7 +111,7 @@ const ProductFrameList = ({
           component={Link}
           to={`/${product.node.category.name.toLowerCase()}/${product.node.name
             .split(" ")[0]
-            .toLowerCase()}`}
+            .toLowerCase()}${hasStyle ? `?style=${variant.style}` : ""}`}
         >
           <Grid item>
             <Typography variant="h4">

@@ -63,6 +63,11 @@ const Theme = createTheme({
       fontFamily: "Montserrat",
       color: grey,
     },
+    body2: {
+      fontSize: "1.5rem",
+      fontFamily: "Montserrat",
+      color: "#fff",
+    },
   },
   overrides: {
     MuiChip: {

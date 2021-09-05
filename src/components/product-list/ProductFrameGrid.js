@@ -24,6 +24,10 @@ const useStyles = makeStyles(theme => ({
       height: "20rem",
       width: "20rem",
     },
+    [theme.breakpoints.up("xs")]: {
+      height: ({ small }) => (small ? "15rem" : undefined),
+      width: ({ small }) => (small ? "15rem" : undefined),
+    },
   },
   product: {
     height: "20rem",
@@ -31,6 +35,10 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.down("xs")]: {
       height: "15rem",
       width: "15rem",
+    },
+    [theme.breakpoints.up("xs")]: {
+      height: ({ small }) => (small ? "12rem" : undefined),
+      width: ({ small }) => (small ? "12rem" : undefined),
     },
   },
   title: {
@@ -43,6 +51,9 @@ const useStyles = makeStyles(theme => ({
     marginTop: "-0.1rem",
     [theme.breakpoints.down("xs")]: {
       width: "20rem",
+    },
+    [theme.breakpoints.up("xs")]: {
+      width: ({ small }) => (small ? "15rem" : undefined),
     },
   },
   invisibility: {
@@ -72,8 +83,11 @@ const ProductFrameGrid = ({
   setSelectedSize,
   selectedColor,
   setSelectedColor,
+  hasStyle,
+  disableQuickView,
+  small,
 }) => {
-  const classes = useStyles()
+  const classes = useStyles({ small })
 
   const [open, setOpen] = useState(false)
   const matchesMD = useMediaQuery(theme => theme.breakpoints.down("md"))
@@ -102,11 +116,11 @@ const ProductFrameGrid = ({
         container
         direction="column"
         onClick={() =>
-          matchesMD
+          matchesMD || disableQuickView
             ? navigate(
                 `/${product.node.category.name.toLowerCase()}/${product.node.name
                   .split(" ")[0]
-                  .toLowerCase()}`
+                  .toLowerCase()}${hasStyle ? `?style=${variant.style}` : ""}`
               )
             : setOpen(true)
         }
@@ -127,6 +141,7 @@ const ProductFrameGrid = ({
         setOpen={setOpen}
         url={imgURL}
         name={name}
+        variant={variant}
         price={variant.price}
         product={product}
         sizes={sizes}
@@ -135,6 +150,7 @@ const ProductFrameGrid = ({
         setSelectedSize={setSelectedSize}
         selectedColor={selectedColor}
         setSelectedColor={setSelectedColor}
+        hasStyle={hasStyle}
       />
     </Grid>
   )
