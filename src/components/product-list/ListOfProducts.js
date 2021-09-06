@@ -1,10 +1,13 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import Grid from "@material-ui/core/Grid"
 import Typography from "@material-ui/core/Typography"
 import { makeStyles } from "@material-ui/core/styles"
 import ProductFrameGrid from "./ProductFrameGrid"
 import ProductFrameList from "./ProductFrameList"
 import useMediaQuery from "@material-ui/core/useMediaQuery"
+import { useQuery } from "@apollo/client"
+
+import { GET_DETAILS } from "../../apollo/queries"
 
 const useStyles = makeStyles(theme => ({
   productContainer: {
@@ -62,13 +65,43 @@ const ListOfProducts = ({
   const FrameHelper = ({ Frame, product, variant }) => {
     const [selectedSize, setSelectedSize] = useState(null)
     const [selectedColor, setSelectedColor] = useState(null)
+    const [selectedVariant, setSelectedVariant] = useState(null)
+    const [stock, setStock] = useState(null)
+
+    const { loading, error, data } = useQuery(GET_DETAILS, {
+      variables: { id: product.node.strapiId },
+    })
+
+    useEffect(() => {
+      if (error) {
+        setStock(-1)
+      } else if (data) {
+        setStock(data.product.variants)
+      }
+    }, [error, data])
+
+    useEffect(() => {
+      if (selectedSize === null) return undefined
+      setSelectedColor(null)
+      const newVariant = product.node.variants.find(
+        item =>
+          item.size === selectedSize &&
+          item.style === variant.style &&
+          item.color === colors[0]
+      )
+      setSelectedVariant(newVariant)
+    }, [selectedSize])
 
     const sizes = []
     const colors = []
-    product.node.variants.map(variant => {
-      sizes.push(variant.size)
-      if (!colors.includes(variant.color)) {
-        colors.push(variant.color)
+    product.node.variants.map(item => {
+      sizes.push(item.size)
+      if (
+        !colors.includes(item.color) &&
+        item.size === (selectedSize || variant.size) &&
+        item.style === variant.style
+      ) {
+        colors.push(item.color)
       }
     })
 
@@ -80,13 +113,14 @@ const ListOfProducts = ({
       <Frame
         sizes={sizes}
         colors={colors}
-        selectedSize={selectedSize}
+        selectedSize={selectedSize || variant.size}
         setSelectedSize={setSelectedSize}
         selectedColor={selectedColor}
         setSelectedColor={setSelectedColor}
-        variant={variant}
+        variant={selectedVariant || variant}
         product={product}
         hasStyle={hasStyle}
+        stock={stock}
       />
     )
   }

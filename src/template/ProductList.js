@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react"
+import { useQuery } from "@apollo/client"
 import Layout from "../components/ui/layout"
 import Grid from "@material-ui/core/Grid"
 import Fab from "@material-ui/core/Fab"
@@ -6,6 +7,7 @@ import Pagination from "@material-ui/lab/Pagination"
 import { makeStyles } from "@material-ui/core/styles"
 import { graphql } from "gatsby"
 
+import { GET_DETAILS } from "../apollo/queries"
 import DynamicToolbar from "../components/product-list/DynamicToolbar"
 import ListOfProducts from "../components/product-list/ListOfProducts"
 import {
@@ -71,6 +73,18 @@ const ProductList = ({
   const scroll = () => {
     scrollRef.current.scrollIntoView({ behavior: "smooth" })
   }
+
+  //   const { loading, error, data } = useQuery(GET_DETAILS, {
+  //     variables: { id },
+  //   })
+
+  //   useEffect(() => {
+  //     if (error) {
+  //       setStock(-1)
+  //     } else if (data) {
+  //       setStock(data.product.variants)
+  //     }
+  //   }, [error, data])
 
   useEffect(() => {
     setPage(1)

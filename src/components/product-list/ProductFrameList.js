@@ -12,6 +12,7 @@ import Swatches from "./Swatches"
 import QtyButton from "./QtyButton"
 
 import { colorIndex } from "./ProductFrameGrid"
+import { getStockDisplay } from "../product-detail/ProductInfo"
 
 const useStyles = makeStyles(theme => ({
   frame: {
@@ -61,6 +62,7 @@ const ProductFrameList = ({
   selectedColor,
   setSelectedColor,
   hasStyle,
+  stock,
 }) => {
   const classes = useStyles()
   const imageIndex = colorIndex(product, variant, selectedColor)
@@ -68,6 +70,11 @@ const ProductFrameList = ({
     imageIndex !== -1
       ? product.node.variants[imageIndex].images
       : variant.images
+
+  const selectedVariant =
+    imageIndex === -1 ? product.node.variants.indexOf(variant) : imageIndex
+
+  const stockDisplay = getStockDisplay(stock, selectedVariant)
 
   return (
     <Grid item container>
@@ -129,7 +136,7 @@ const ProductFrameList = ({
           </Grid>
           <Grid item>
             <Typography variant="h3" classes={{ root: classes.stock }}>
-              12 Currently In Stock
+              {stockDisplay}
             </Typography>
           </Grid>
         </Grid>
@@ -151,7 +158,7 @@ const ProductFrameList = ({
           />
         </Grid>
 
-        <QtyButton />
+        <QtyButton stock={stock} selectedVariant={selectedVariant} />
       </Grid>
     </Grid>
   )

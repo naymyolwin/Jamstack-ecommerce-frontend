@@ -69,7 +69,10 @@ const useStyles = makeStyles(theme => ({
 export const colorIndex = (product, variant, color) => {
   return product.node.variants.indexOf(
     product.node.variants.filter(
-      item => item.color === color && variant.style === item.style
+      item =>
+        item.color === color &&
+        variant.style === item.style &&
+        item.size === variant.size
     )[0]
   )
 }
@@ -86,6 +89,7 @@ const ProductFrameGrid = ({
   hasStyle,
   disableQuickView,
   small,
+  stock,
 }) => {
   const classes = useStyles({ small })
 
@@ -151,6 +155,8 @@ const ProductFrameGrid = ({
         selectedColor={selectedColor}
         setSelectedColor={setSelectedColor}
         hasStyle={hasStyle}
+        stock={stock}
+        imageIndex={imageIndex}
       />
     </Grid>
   )
