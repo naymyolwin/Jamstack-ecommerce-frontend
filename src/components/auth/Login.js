@@ -59,17 +59,9 @@ const useStyles = makeStyles(theme => ({
   reset: {
     marginTop: "-4rem",
   },
-  "@global": {
-    ".MuiInput-underline:before, .MuiInput-underline:hover:not(.Mui-disabled):before": {
-      borderBottom: `2px solid ${theme.palette.secondary.main}`,
-    },
-    ".MuiInput-underline:after": {
-      borderBottom: `2px solid ${theme.palette.primary.main}`,
-    },
-  },
 }))
 
-const Login = () => {
+const Login = ({ steps, setSelectedStep }) => {
   const classes = useStyles()
   const [visible, setVisible] = useState(false)
   const [forgot, setForgot] = useState(false)
@@ -105,6 +97,11 @@ const Login = () => {
         />
       ),
     },
+  }
+
+  const navigateSignUp = () => {
+    const signUp = steps.find(step => step.label === "Sign Up")
+    setSelectedStep(steps.indexOf(signUp))
   }
 
   return (
@@ -189,7 +186,7 @@ const Login = () => {
       )}
       <Grid item container justifyContent="space-between">
         <Grid item>
-          <IconButton>
+          <IconButton onClick={navigateSignUp}>
             <img src={addUserIcon} alt="sign up" />
           </IconButton>
         </Grid>
