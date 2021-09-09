@@ -5,6 +5,15 @@ const validate = values => {
       /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/.test(val),
     name: val => val.length > 3,
     message: val => val.length > 3,
+    password: val =>
+      /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/.test(
+        val
+      ),
+    address: val =>
+      /^(\d+) ?([A-Za-z](?= ))? (.*?) ([^ ]+?) ?((?<= )APT)? ?((?<= )\d*)?$/.text(
+        val
+      ),
+    zip: val => /^\d{5}(-\d{4})?$/.test(val),
   }
   const valid = {}
   Object.keys(values).map(field => {

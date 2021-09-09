@@ -152,7 +152,7 @@ const useStyles = makeStyles(theme => ({
     ".MuiInput-underline:after": {
       borderBottom: `2px solid ${theme.palette.secondary.main}`,
     },
-    ".MuiInput-multiline": {},
+    // ".MuiInput-multiline": {},
   },
 }))
 
