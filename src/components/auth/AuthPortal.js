@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useContext } from "react"
 import Grid from "@material-ui/core/Grid"
 import Typography from "@material-ui/core/Typography"
 import { makeStyles } from "@material-ui/core/styles"
@@ -6,6 +6,7 @@ import Paper from "@material-ui/core/Paper"
 import Login from "./Login"
 import SignUp from "./SignUp"
 import Complete from "./Complete"
+import { UserContext } from "../../contexts"
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -36,6 +37,7 @@ const AuthPortal = () => {
   const classes = useStyles()
 
   const [selectedStep, setSelectedStep] = useState(0)
+  const { user, dispatchUser } = useContext(UserContext)
 
   const steps = [
     { component: Login, label: "Login" },
@@ -64,6 +66,8 @@ const AuthPortal = () => {
                   setSelectedStep={setSelectedStep}
                   steps={steps}
                   key={Step.label}
+                  user={user}
+                  dispatchUser={dispatchUser}
                 />
               ) : null
             )}

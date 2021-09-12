@@ -14,6 +14,7 @@ import backward from "../../images/backwards-outline.svg"
 
 import Fields from "./Fields"
 import { EmailPassword } from "./Login"
+import { setUser } from "../../contexts/actions"
 
 const useStyles = makeStyles(theme => ({
   addUserIcon: {
@@ -53,7 +54,7 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const SignUp = ({ steps, setSelectedStep }) => {
+const SignUp = ({ steps, setSelectedStep, dispatchUser }) => {
   const classes = useStyles()
 
   const [visible, setVisible] = useState(false)
@@ -87,8 +88,12 @@ const SignUp = ({ steps, setSelectedStep }) => {
         password: values.password,
       })
       .then(response => {
-        console.log("User Profile", response.data.user)
-        console.log("JWT", response.data.jwt)
+        dispatchUser(
+          setUser({
+            ...response.data.user,
+            jwt: response.data.jwt,
+          })
+        )
         const complete = steps.find(step => step.label === "Complete")
         setSelectedStep(steps.indexOf(complete))
       })

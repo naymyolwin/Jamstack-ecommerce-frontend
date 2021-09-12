@@ -20,6 +20,7 @@ import close from "../../images/close.svg"
 
 import validate from "../ui/validate"
 import Fields from "./Fields"
+import { setUser } from "../../contexts/actions"
 
 const useStyles = makeStyles(theme => ({
   emailAdornment: {
@@ -97,7 +98,7 @@ export const EmailPassword = (
   },
 })
 
-const Login = ({ steps, setSelectedStep }) => {
+const Login = ({ steps, setSelectedStep, user, dispatchUser }) => {
   const classes = useStyles()
   const [visible, setVisible] = useState(false)
   const [errors, setErrors] = useState({})
@@ -122,8 +123,12 @@ const Login = ({ steps, setSelectedStep }) => {
         password: values.password,
       })
       .then(response => {
-        console.log("Profile", response.data.user)
-        console.log("JWT", response.data.jwt)
+        dispatchUser(
+          setUser({
+            ...response.data.user,
+            jwt: response.data.jwt,
+          })
+        )
       })
       .catch(error => {
         console.log(error)
